@@ -1,0 +1,105 @@
+spring:
+  application:
+    name: ENL
+    version: 1.0.0
+    description: Enl Accounts Generator APIs
+    jwt:
+      jwtSecret: 2D4A614E645267556B58703273357638792F423F4428472B4B6250655368566D
+      jwtExpirationMs: 86400000
+      jwtCookie: QPXYPUQZRE
+
+  datasource:
+    url: ${DATABASE_URL:jdbc:mariadb://102.131.62.24:3306/payflo_dev?allowPublicKeyRetrieval=true&useSSL=false}
+    username: ${DATABASE_USERNAME:payflo_dev_usr}
+    password: ${DATABASE_PASSWORD:pJWxeQ0LyyOmc9eEDD7W1I}
+    driver-class-name: org.mariadb.jdbc.Driver
+
+  r2dbc:
+    url: ${DATABASE_R2DBC_URL:r2dbc:mariadb://102.131.62.24:3306/payflo_dev?allowPublicKeyRetrieval=true&useSSL=false}
+    username: ${DATABASE_USERNAME:payflo_dev_usr]
+    password: ${DATABASE_PASSWORD:pJWxeQ0LyyOmc9eEDD7W1I}
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: none
+
+  main:
+    allow-bean-definition-overriding: true
+
+  data:
+    r2dbc:
+      repositories:
+        enabled: true
+    jdbc:
+      repositories:
+        enabled: false
+
+server:
+  address: 0.0.0.0
+  port: 8065
+
+logging:
+  level:
+    org:
+      springframework:
+        data:
+          r2dbc: DEBUG
+
+egroupx:
+  numberOfThreads: ${NUM_OF_THREADS:10}
+  processTimeoutInSec: ${PROCESS_TIMEOUT_IN_SEC:1200}
+  accountWeightings:  ${ACCOUNT_WEIGHTINGS:1234567890}
+
+  accounts:
+
+    current:  #prefix start from 100
+      mobi:
+        accNumbersTobeReserved: ${MIN_MOBI_ACC_NUM_TO_BE_RESERVED:150000}
+        accNumberPrefix: ${MOBI_ACC_PREFIX:110}
+      ezi:
+        accNumbersTobeReserved: ${MIN_EZI_ACC_NUM_TO_BE_RESERVED:150000}
+        accNumberPrefix: ${EZI_ACC_PREFIX:120}
+      biz:
+        accNumbersTobeReserved: ${MIN_BIZ_ACC_NUM_TO_BE_RESERVED:150000}
+        accNumberPrefix: ${BIZ_ACC_PREFIX:130}
+
+    savings: #start from 200
+      sevi:
+        accNumbersTobeReserved: ${MIN_SEVI_ACC_NUM_TO_BE_RESERVED:150000}
+        accNumberPrefix: ${SEVI_ACC_PREFIX:200}
+
+    loan:  #start from 300
+      loan:
+        accNumbersTobeReserved: ${MIN_LOAN_ACC_NUM_TO_BE_RESERVED:150000}
+        accNumberPrefix: ${LOAN_ACC_PREFIX:300}
+
+    partners: #start from 400
+      shembe:
+        accNumbersTobeReserved: ${MIN_SHEMBE_ACC_NUM_TO_BE_RESERVED:150000}
+        accNumberPrefix: ${SHEMBE_ACC_PREFIX:410}
+      doe:
+        accNumbersTobeReserved: ${MIN_DOE_ACC_NUM_TO_BE_RESERVED:150000}
+        accNumberPrefix: ${DOE_ACC_PREFIX:420}
+
+    other:  #other no prefix
+      other:
+        accNumbersTobeReserved: ${MIN_OTHER_ACC_NUM_TO_BE_RESERVED:1}
+        accNumberPrefix:  ${OTHER_ACC_PREFIX:500}
+
+  otpSMS:
+    endpoint: http://102.131.60.77:8088
+
+management:
+  endpoints:
+    metrics:
+      enabled: true
+    web:
+      exposure:
+        include: "*"
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: swagger-ui/index.html
