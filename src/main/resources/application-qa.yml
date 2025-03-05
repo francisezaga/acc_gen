@@ -1,28 +1,28 @@
 spring:
   application:
-    name: esure
+    name: ENL
     version: 1.0.0
-    description: ESure APIS
+    description: Enl Accounts Generator APIs
     jwt:
       jwtSecret: 2D4A614E645267556B58703273357638792F423F4428472B4B6250655368566D
       jwtExpirationMs: 86400000
       jwtCookie: QPXYPUQZRE
 
   datasource:
-    url: jdbc:mariadb://102.131.62.24:3306/esure_db?allowPublicKeyRetrieval=true&useSSL=false
-    username: esure_uat
-    password: qbAS7GIz3BIrC6Ioget8IxjsL
+    url: ${DATABASE_URL:jdbc:mariadb://102.131.62.24:3306/payflo_dev?allowPublicKeyRetrieval=true&useSSL=false}
+    username: ${DATABASE_USERNAME:payflo_dev_usr}
+    password: ${DATABASE_PASSWORD:pJWxeQ0LyyOmc9eEDD7W1I}
     driver-class-name: org.mariadb.jdbc.Driver
 
   r2dbc:
-    url: r2dbc:mariadb://102.131.62.24:3306/esure_db?allowPublicKeyRetrieval=true&useSSL=false
-    username: esure_uat
-    password: qbAS7GIz3BIrC6Ioget8IxjsL
+    url: ${DATABASE_R2DBC_URL:r2dbc:mariadb://102.131.62.24:3306/payflo_dev?allowPublicKeyRetrieval=true&useSSL=false}
+    username: ${DATABASE_USERNAME:payflo_dev_usr]
+    password: ${DATABASE_PASSWORD:pJWxeQ0LyyOmc9eEDD7W1I}
 
   jpa:
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
 
   main:
     allow-bean-definition-overriding: true
@@ -46,49 +46,49 @@ logging:
         data:
           r2dbc: DEBUG
 
-
 egroupx:
-  services:
-    fsp:
-      endpointUrl: https://www.fspsolutions.com
-      apiKey: 1Am}@vdV0mJV[J4vL=k?!e+H~3=].NP2
+  numberOfThreads: ${NUM_OF_THREADS:10}
+  processTimeoutInSec: ${PROCESS_TIMEOUT_IN_SEC:1200}
+  accountWeightings:  ${ACCOUNT_WEIGHTINGS:1234567890}
 
-    pol360:
-      endpointUrl: https://web02.pol360.co.za
-      tokenGenClientName: RoyaleCrownsFinancialServices
-      tokenUUID: 9eab086c-0dc1-4e5e-8f46-6b8e6e2a3656
-      userName: damien@pol360.co.za
-      password: 360API$360#
+  accounts:
 
-    medicalAid:
-      emailAddress: chinyangaf@gmail.com
+    current:  #prefix start from 100
+      mobi:
+        accNumbersTobeReserved: ${MIN_MOBI_ACC_NUM_TO_BE_RESERVED:150000}
+        accNumberPrefix: ${MOBI_ACC_PREFIX:110}
+      ezi:
+        accNumbersTobeReserved: ${MIN_EZI_ACC_NUM_TO_BE_RESERVED:150000}
+        accNumberPrefix: ${EZI_ACC_PREFIX:120}
+      biz:
+        accNumbersTobeReserved: ${MIN_BIZ_ACC_NUM_TO_BE_RESERVED:150000}
+        accNumberPrefix: ${BIZ_ACC_PREFIX:130}
 
-    namescan:
-      url: https://api.namescan.io/v3
-      apiKey: 06A85DBCDCAD492B80FC3E1C18FAB4C2
+    savings: #start from 200
+      sevi:
+        accNumbersTobeReserved: ${MIN_SEVI_ACC_NUM_TO_BE_RESERVED:150000}
+        accNumberPrefix: ${SEVI_ACC_PREFIX:200}
 
-    marisit:
-      url: https://online.marisit.co.za
-      username: jm980514uts
-      password: JOsh078112$%&
+    loan:  #start from 300
+      loan:
+        accNumbersTobeReserved: ${MIN_LOAN_ACC_NUM_TO_BE_RESERVED:150000}
+        accNumberPrefix: ${LOAN_ACC_PREFIX:300}
 
-    securecitizen:
-      url: https://citizenapi.securecitizen.cloud/Citizen
+    partners: #start from 400
+      shembe:
+        accNumbersTobeReserved: ${MIN_SHEMBE_ACC_NUM_TO_BE_RESERVED:150000}
+        accNumberPrefix: ${SHEMBE_ACC_PREFIX:410}
+      doe:
+        accNumbersTobeReserved: ${MIN_DOE_ACC_NUM_TO_BE_RESERVED:150000}
+        accNumberPrefix: ${DOE_ACC_PREFIX:420}
 
-    otpSMS:
-      endpoint: http://102.131.60.77:8088
+    other:  #other no prefix
+      other:
+        accNumbersTobeReserved: ${MIN_OTHER_ACC_NUM_TO_BE_RESERVED:1}
+        accNumberPrefix:  ${OTHER_ACC_PREFIX:500}
 
-  email:
-    host: mail.ezaga.co.za
-    port: 587
-    sender: noreply@ezaga.co.za
-    recipient: registration@ezitransact.co.za
-    username: noreply@ezaga.co.za
-    password: Dv1E}^VR5L?L
-    sendEmail: true
-
-  files:
-    dir:
+  otpSMS:
+    endpoint: http://102.131.60.77:8088
 
 management:
   endpoints:
